@@ -1,0 +1,62 @@
+nokia skladatel, regulární výraz pro notu:
+regexr.com: (1|2|4|8|16|32)([.]?([#]?[a-g][1-3]?|[-]))
+formálně:   (1+2+4+8+16+32)([.]?([#]?[a-g][1-3]?+[-]))
+
+melobeep, regulární výraz pro notu:
+delka[.][.][t][#]ton[oktava]
+regexr.com: (1|2|4|8|16|32)([.]{0,2}[t]?([#]?[a-hA-H][1-3]?|[-]))
+formálně:   (1+2+4+8+16+32)([.]{0,2}[t]?([#]?[a-hA-H][1-3]?)+[-]))
+
+melobeep, regulární výraz pro notu i se slovem:
+              delka noty    tecky  triola     ton       pauza
+            v             v v v     v v      v   v       v v
+regexr.com: (1|2|4|8|16|32)([.]{0,2}[t]?([#]?[a-hA-H][1-3]?|[-]))(\[[^\]]*\])?
+                                         ^ ^      ^   ^       ^          ^
+                                       krizek    oktava        slovo v []
+formálně:   (1+2+4+8+16+32)(([.]?[.]?[t]?[#]?[a-hA-H][1-3]?)+[-])(\[[^\]]*\])?
+
+kompletní melobeep, regulární výraz pro notu i se slovem a ligaturou:
+příklad: 8.#a1+2+32.t+16t+4.[ahoj ]
+regexr.com: (1|2|4|8|16|32)(\+(16|2|4|8|1|32)[.]{0,2}[t]?)*([.]{0,2}[t]?(([#]?[a-hA-H][1-3]?)|[-]))(\[[^\[\]]*\])?
+formálně:   (1+2+4+8+16+32)(\+(16+2+4+8+1+32)[.]{0,2}[t]?)*([.]{0,2}[t]?(([#]?[a-hA-H][1-3]?)+[-]))(\[[^\[\]]*\])?
+
+rozděleno (podle opory z IFJ, str.22, př.2.4.7):
+<delka>    = 1+2+4+8+16+32;
+<tecka>    = \.;
+<krizek>   = #;
+<ton>      = a+b+c+d+e+f+g+h+A+B+C+D+E+F+G+H;
+<oktava>   = 1+2+3;
+<triola>   = t;
+<ligatura> = (\+<delka><tecka>{0,2}<triola>?);
+<pauza>    = -;
+<slovo>    = \[[^\[\]]*\];
+
+<melobeep_note> = <delka><ligatura>*(<tecka>{0,2}<triola>?(<krizek>?<ton><oktava>? + <pauza>))<slovo>?
+
+další specifikace:
+Zmena tempa
+- cislo od 30 do 240 oddeleno z obou stran jednim koncem radku
+- schvalen novy format 8.=250(16..t=380); bude to podporovat i stary format(jenom cislo od 30 do 240)
+Komentare
+- v zavorkach:
+(cdur stupnice: ) 4c 4d 4e (tady je pulton) 4f 4g 4a 4h (a tady taky) 4c1
+- nebo dat komentar jako v Lilypondu...? (od % do konce radku)
+Akordy
+-dva typy:
+  4<d #f a> (4..+16.<d #f1 a2>t)
+  <8a 4#c 2e> (<8.a 4#c1t 2e2+8>)
+Rozsireni rozsahu o velkou oktavu - schvaleno
+- kvuli rozsahu kytary(E A d g h e1), zapis velkym pismenem, napr.: 4C (8.t#F+16..)
+
+
+pozn. V části "formálně" a "rozděleno" je znak '+' je ve významu disjunkce, nikoli kvantifikátoru.
+
+Změny:
+vyhozena odmlka(*)
+ligatura jen pro notu(tedy ne pro pauzy)
+
+info:
+odmlka(*) prinasi komplikace, protoze je podminena notou - vysledny regexp by znacne narostl a zbytecne se zkomplikoval
+navic neni odmlka cistym prvkem jazyka, moc nesouvisi se samotnymi tony, je lepsi problem resit jinak:
+- odmlku je mozno implementovat ve funkci play(), jako fade in/out
+- nebo nacitat o jednu notu dopredu a v pripade dvou stejnych not za sebou(stejne frekvence) dat mezi ne odmlku

@@ -1,0 +1,105 @@
+NAVRHY:
+Zmena tempa
+- cislo od 30 do 240 oddeleno z obou stran jednim koncem radku
+- schvalen novy format 8.=250(16..t=380); bude to podporovat i stary format(jenom cislo od 30 do 240)
+Komentare
+- v zavorkach:
+(cdur stupnice: ) 4c 4d 4e (tady je pulton) 4f 4g 4a 4h (a tady taky) 4c1
+- nebo dat komentar jako v Lilypondu...? (od % do konce radku)
+Akordy
+-dva typy:
+	<8a 4c> <8a 4c> <8a 4c> 
+	-------------------------------------
+	4.< c, e, g > < , , + >  4.<c, , a >
+	^^        ^   ^^^^^^^^^
+	Delka     |   Vazba mezi skupinami
+	skupiny   \
+	           - Clenove skupiny
+	-------------------------------------
+	^^^- celkem dobry napad, resi to vsechny ligato-akordove problemy
+    4<d #f a> (16.+4..t<d #f1 a2>)
+    <8a 4#c 2e> (<8.a 4t#c1 8+2e2>)
+Pouvazovat nad relativnim zapisem jako v Lilypondu...
+- urychlilo by to zapis, ale to urychli GUIcko
+- nebyl by uz to jednoduchy a sikovny Melobeep z Nokia skladatele, ale takovy mini Lilypond, vyvoj by se uz vydal jinym smerem... a to nechceme... :) takze NE relativnimu zapisu
+- pockat... a co kdyby byl relativni zapis volitelny?
+- zapise se jen nota([#]a-h) a z predchozi noty se vezme delka trvani(pocitaje ligaturu) a oktava(nejbliz od predch.noty - je nutne nechat i moznost manualne zvolit oktavu)
+- NE. Problem je, ze mam notu bez oktavy jako notu v male oktave.
+Rozsireni rozsahu o velkou oktavu - schvaleno
+- kvuli rozsahu kytary(E A d g h e1), zapis velkym pismenem, napr.: 4C (8.t#F+16..)
+Rozsireni do uplnosti - jen navrh
+- delka noty az do 1/256, trojteckovanost, pentoly, heptoly
+- vyska noty od subsubkontra oktavy do sesticarkovane
+Velka zmena syntaxe!
+- sjednoceni delkove casti noty k sobe - dopredu
+- triola a ligatura se budou psat pred notou
+4tc misto 4ct, 4.ta1, 4+8.+16d2
+4..t+8.+16..t#c1
+Zpetna kompatibilita s Nokia skladatelem 
+- nota 'b' stejna jako nota 'h' - anglosaske a ceske(a jine) znaceni
+Nezavest i becka?
+- kvuli Lilypondu...
+- mozna syntaxe: 4bg (16..tba3)
+- (nadejny navrh)
+- zalezi, jestli chci notaci nebo hudbu, MIDI to napr. vubec neresi
+
+pozadavky na prevod Melobeepu do LilyPondu:
+jednoduchy prevod, v absolutni notaci
+relativni notace, moznost volby referencni noty
+podpora textu(slov)
+moznost vygenerovani kytarove tabulatury
+podpora ligatur
+
+prevadet Melobeep i do MIDI (i wavu)
+
+pozadavky na datove typy:
+Ligature musi byt typove kompatibilni s Note
+Ligature ma mit (jako atribut) jeden objekt NotePitch a pole objektu NoteDuration
+mozne reseni:
+Ligature bude dedit od Note a vsechny atributy od NoteDuration se ukryji(private) - ne moc ciste reseni...
+
+vytvorit output.cpp a .h
+- bude tam abstraktni trida output, s virtualni metodou output
+- dedit od ni budou MidiOutput, WavOutput, AudioOutput... a ty si budou implementovat metodu output kazda po svem
+- anebo v output.cpp vytvorit pouze sadu funkci pro ruzne vystupy a netvorit specialni tridy
+
+zpracovani argumentu - boost.program_options
+
+omezeni vstupu
+- pro NoteDuration::value, aby sly zadat jen cisla 1,2,4,8,16,32
+- pokud je NoteDuration::dot false, pak musi byt i NoteDuration::dot2 false
+- vyse uvedene resit vyhozenim vyjimky v konstruktoru
+
+
+Honzovy rady:
+nacitat vstup bufferovane, napr. po 4kB
+
+Datove struktury:
+Song
+	<consists-of> List<Track>
+
+Track
+	<consists-of> List<MelodyObject>(, List<Connective>)
+
+MelodyObject
+	//hudebni element, high level entita
+
+Note
+	<is-a> MelodyObject
+	<consists-of> Pitch
+	<consists-of> Duration
+
+Rest
+	<is-a> MelodyObject
+	<consists-of> Duration
+
+(Chord
+	<is-a> MelodyObject
+	<consists-of> Duration
+	<consists-of> List<Pitch>)
+
+(Legato
+	<is-a> Connective)
+
+pouzit knihovnu https://github.com/craigsapp/midifile
+resi zapis do Midi souboru a zpracovani argumentu
