@@ -5,13 +5,9 @@ digraph finite_state_machine {
     node [shape = point ] init;
 
     node [shape = circle, label="Start", fontsize=14] Start;
-    node [shape = circle, label="1", fontsize=12] whole;
-    node [shape = circle, label="2", fontsize=12] half;
-    node [shape = circle, label="4", fontsize=12] quarter;
-    node [shape = circle, label="8", fontsize=12] eighth;
-    node [shape = circle, label="16", fontsize=12] sixteenth;
-    node [shape = circle, label="32_1", fontsize=12] thirty_second_1;
-    node [shape = circle, label="32_2", fontsize=12] thirty_second_2;
+    node [shape = circle, label="1", fontsize=12] one;
+    node [shape = circle, label="3", fontsize=12] three;
+    node [shape = circle, label="duration", fontsize=12] duration;
     node [shape = circle, label="dot", fontsize=12] dot;
     node [shape = circle, label="sharp", fontsize=12] sharp;
     node [shape = circle, label="tone", fontsize=12, peripheries=2] tone;
@@ -20,43 +16,24 @@ digraph finite_state_machine {
 
     init -> Start;
 
-    Start -> Start [ label = "\\w" ];
-    Start -> whole [ label = "1" ];
-    Start -> half [ label = "2" ];
-    Start -> quarter [ label = "4" ];
-    Start -> eighth [ label = "8" ];
-    Start -> thirty_second_1 [ label = "3" ];
+    Start -> one [ label = "1" ];
+    Start -> duration [ label = "2,4,8" ];
+    Start -> three [ label = "3" ];
     
-    whole -> sixteenth [ label = "6" ];
-    thirty_second_1 -> thirty_second_2 [ label = "2" ];
+    one -> duration [ label = "6" ];
+    three -> duration [ label = "2" ];
 
-    whole -> dot [ label = "'.'"];
-    half -> dot [ label = "'.'"];
-    quarter -> dot [ label = "'.'"];
-    eighth -> dot [ label = "'.'"];
-    sixteenth -> dot [ label = "'.'"];
-    thirty_second_2 -> dot [ label = "'.'"];
+    one -> dot [ label = "'.'"];
+    duration -> dot [ label = "'.'"];
 
-    whole -> sharp [ label = "'#'"];
-    half -> sharp [ label = "'#'"];
-    quarter -> sharp [ label = "'#'"];
-    eighth -> sharp [ label = "'#'"];
-    sixteenth -> sharp [ label = "'#'"];
-    thirty_second_2 -> sharp [ label = "'#'"];
+    one -> sharp [ label = "'#'"];
+    duration -> sharp [ label = "'#'"];
 
-    whole -> tone [ label = "[a-h]"];
-    half -> tone [ label = "[a-h]"];
-    quarter -> tone [ label = "[a-h]"];
-    eighth -> tone [ label = "[a-h]"];
-    sixteenth -> tone [ label = "[a-h]"];
-    thirty_second_2 -> tone [ label = "[a-h]"];
+    one -> tone [ label = "[a-h]"];
+    duration -> tone [ label = "[a-h]"];
 
-    whole -> rest [ label = "'-'"];
-    half -> rest [ label = "'-'"];
-    quarter -> rest [ label = "'-'"];
-    eighth -> rest [ label = "'-'"];
-    sixteenth -> rest [ label = "'-'"];
-    thirty_second_2 -> rest [ label = "'-'"];
+    one -> rest [ label = "'-'"];
+    duration -> rest [ label = "'-'"];
 
     dot -> sharp [ label = "'#'" ];
     dot -> tone [ label = "[a-h]" ];

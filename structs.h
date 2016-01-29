@@ -1,5 +1,5 @@
-#ifndef NOTES_H
-#define NOTES_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
 #include <string>
 #include <vector>
@@ -18,6 +18,9 @@ const std::map<char, double> freqTable {
   {'h', 246.9416506281}
 };
 
+const std::array<char, 6> durationChars = {'1','2','3','4','6','8'};
+const std::array<char, 3> octaveChars = {'1','2','3'};
+
 // C++11 strongly typed enum
 enum class octaveEnum { 
   SMALL_OCTAVE,
@@ -25,6 +28,16 @@ enum class octaveEnum {
   TWO_LINE_OCTAVE,
   THREE_LINE_OCTAVE
 };
+
+const std::map<char, octaveEnum> octaveTable {
+  {'1', octaveEnum::ONE_LINE_OCTAVE},
+  {'2', octaveEnum::TWO_LINE_OCTAVE},
+  {'3', octaveEnum::THREE_LINE_OCTAVE}
+};
+
+bool isNote(char c);
+bool isDuration(char c);
+bool isOctave(char c);
 
 /* MelodyObject
  *  high level entity over Notes and Rests
@@ -38,12 +51,15 @@ class NoteDuration
 {
 private:
   unsigned short value;  //1, 2, 4, 8, 16, 32(, ...)
-  bool dot;
+  bool dot = false;
   
   double duration;    //in ms, depended on Composition tempo
 
 public:
-  NoteDuration(unsigned short v, bool d);
+  NoteDuration();
+
+  void setValue(char v);
+  void setDot();
 
   unsigned short getValue();
   bool hasDot();
@@ -63,12 +79,15 @@ private:
 
   double pitch;     //in Hz
 
-  bool isNote(char c);
-
 public:
-  NotePitch(bool s, char n, octaveEnum o);
+  NotePitch();
 
-  bool getSharp();
+  void setSharp();
+  void setNote(char n);
+  void setOctave(octaveEnum o);
+  void setPitch(double p);
+
+  bool hasSharp();
   char getNote();
   octaveEnum getOctave();
   double getPitch();
@@ -81,49 +100,41 @@ public:
 */
 class Note : public MelodyObject
 {
-private:
+public:
   NoteDuration duration;
   NotePitch pitch;
-  std::string word;
 
-public:
-  Note(unsigned short v,
-       bool d,
-       bool s,
-       char n,
-       octaveEnum o,
-       std::string w):
-    duration(v, d),
-    pitch(s, n, o),
-    word(w)
+  Note():
+    duration(),
+    pitch()
   {}
 
-  std::string getWord();
+  std::string print();
 
   ~Note(){}
 };
 
 class Rest : public MelodyObject
 {
-private:
+public:
   NoteDuration duration;
 
-public:
-  Rest(unsigned short v,
-       bool d):
-    duration(v, d)
+  Rest():
+    duration()
   {}
   ~Rest(){}
 };
 
 class Track
 {
-private:
-  std::vector<MelodyObject> melody;
-  
 public:
-  Track();
-  ~Track();
+  //TODO: change back to:
+  // std::vector<MelodyObject> melody;
+  
+  std::vector<Note> melody;
+  
+  Track(){}
+  ~Track(){}
 };
 
 class Composition
@@ -136,5 +147,6 @@ public:
   Composition(){}
   ~Composition(){}
 };
+
 
 #endif
