@@ -10,9 +10,9 @@ NoteDuration::NoteDuration()
     duration(0)
 {}
 
-void NoteDuration::setValue(char v) {
+void NoteDuration::setValue(unsigned short v) {
   if(isDuration(v))
-    value = v - '0';  //char to number conversion
+    value = v;
   // else
   //   throw exception;
 }
@@ -71,7 +71,7 @@ double NotePitch::getPitch() {
 }
 
 
-string Note::print() {
+string Note::toString() {
   string noteString = "";
   noteString.push_back(duration.getValue() + '0');
   if(duration.hasDot()) noteString.push_back('.');
@@ -98,15 +98,14 @@ bool isNote(char c) {
   return (c >= 'a' and c <= 'h');
 }
 
-bool isDuration(char c) {
+bool isDuration(unsigned short c) {
   //FIXME: use std::find in durationChars
-  unsigned short i = c - '0';
-  return (i == 1 or
-          i == 2 or
-          i == 3 or
-          i == 4 or
-          i == 6 or
-          i == 8
+  return (c == 1 or
+          c == 2 or
+          c == 3 or
+          c == 4 or
+          c == 6 or
+          c == 8
           );
 }
 

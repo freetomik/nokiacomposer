@@ -22,11 +22,12 @@ int main(int argc, char **argv)
   if(s) {
     printf("Error with reading file on char %d.\n", s);
     //TODO: print last successfully scanned note
-    return s;
+    // return s;
   }
 
   for(vector<Note>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
-    cout << n->print() << ' ';
+    cout << n->toString() << ' ';
+    // cout << n->duration.getValue() << endl;
   }
 
   // cout << BPM << endl;

@@ -36,7 +36,7 @@ const std::map<char, octaveEnum> octaveTable {
 };
 
 bool isNote(char c);
-bool isDuration(char c);
+bool isDuration(unsigned short c);
 bool isOctave(char c);
 
 /* MelodyObject
@@ -58,7 +58,7 @@ private:
 public:
   NoteDuration();
 
-  void setValue(char v);
+  void setValue(unsigned short v);
   void setDot();
 
   unsigned short getValue();
@@ -109,7 +109,7 @@ public:
     pitch()
   {}
 
-  std::string print();
+  std::string toString();
 
   ~Note(){}
 };
@@ -128,7 +128,7 @@ public:
 class Track
 {
 public:
-  //TODO: change back to:
+  //TODO: change to:
   // std::vector<MelodyObject> melody;
   
   std::vector<Note> melody;

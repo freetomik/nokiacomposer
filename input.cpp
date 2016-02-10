@@ -17,15 +17,16 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
 
   while(1) {
     sourceFile.get(c);
-    if(c == EOF) return 0;
+    printf("%d\n", c);
+    if(sourceFile.eof()) return 0;
     switch(state) {
       case START:
-        if(isDuration(c)) {
+        if(isDuration(c-'0')) {
           if(c == '1') state = _1;
           else if(c == '3') state = _3;
           else {  //2,4,8
             state = DURATION;
-            note.duration.setValue(c);
+            note.duration.setValue(c-'0');
           }
           break;
         }
@@ -33,6 +34,8 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
           while(sourceFile.get(c)) {
             i++;
             if(!isspace(c)) break;
+            if(sourceFile.eof()) return 0;
+            printf("><");
           }
           sourceFile.unget();
           i--;
@@ -45,7 +48,7 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
       case _1:
         if(c == '6') {
           state = DURATION;
-          note.duration.setValue(c);
+          note.duration.setValue(16);
         }
         else if(c == '.') {
           state = DOT;
@@ -69,7 +72,7 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
       case _3:
         if(c == '2') {
           state = DURATION;
-          note.duration.setValue(c);
+          note.duration.setValue(32);
           break;
         }
         else {
@@ -146,6 +149,7 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
         new (&note) Note();
         break;
       case OCTAVE:
+        printf("oct.\n");
         state = START;
         sourceFile.unget();
         i--;
