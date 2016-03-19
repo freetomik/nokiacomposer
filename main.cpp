@@ -4,9 +4,8 @@
 #include <map>
 #include <ao/ao.h>  //audio library
 
-#include "input.h"
 #include "structs.h"
-// #include "output.h"
+#include "input.h"
 
 using namespace std;
 
@@ -25,9 +24,8 @@ int main(int argc, char **argv)
     // return s;
   }
 
-  for(vector<Note>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
-    cout << n->toString() << ' ';
-    // cout << n->duration.getValue() << endl;
+  for(vector<MelodyObject*>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
+    cout << (*n)->toString() << ' ';
   }
 
   // cout << BPM << endl;

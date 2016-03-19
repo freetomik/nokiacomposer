@@ -37,12 +37,17 @@ const std::map<char, octaveEnum> octaveTable {
 
 bool isNote(char c);
 bool isDuration(unsigned short c);
-bool isOctave(char c);
+bool isDurationChar(char c);
+bool isOctaveChar(char c);
 
 /* MelodyObject
  *  high level entity over Notes and Rests
 */
-class MelodyObject {};
+class MelodyObject {
+
+public:
+  virtual std::string toString(){ return ""; };
+};
 
 /* NoteDuration
  *  duration part of note
@@ -109,9 +114,9 @@ public:
     pitch()
   {}
 
-  std::string toString();
+  virtual std::string toString();
 
-  ~Note(){}
+  virtual ~Note(){}
 };
 
 class Rest : public MelodyObject
@@ -122,16 +127,16 @@ public:
   Rest():
     duration()
   {}
-  ~Rest(){}
+
+  virtual std::string toString();
+  
+  virtual ~Rest(){}
 };
 
 class Track
 {
 public:
-  //TODO: change to:
-  // std::vector<MelodyObject> melody;
-  
-  std::vector<Note> melody;
+  std::vector<MelodyObject*> melody;
   
   Track(){}
   ~Track(){}

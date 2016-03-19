@@ -73,7 +73,7 @@ double NotePitch::getPitch() {
 
 string Note::toString() {
   string noteString = "";
-  noteString.push_back(duration.getValue() + '0');
+  noteString += std::to_string(duration.getValue());
   if(duration.hasDot()) noteString.push_back('.');
   if(pitch.hasSharp()) noteString.push_back('#');
   noteString.push_back(pitch.getNote());
@@ -93,27 +93,45 @@ string Note::toString() {
   return noteString;
 }
 
+string Rest::toString() {
+  string restString = "";
+  restString += std::to_string(duration.getValue());
+  if(duration.hasDot()) restString.push_back('.');
+  restString.push_back('-');
+  return restString;
+}
+
 bool isNote(char c) {
   //FIXME: use std::find in freqTable
   return (c >= 'a' and c <= 'h');
 }
 
-bool isDuration(unsigned short c) {
-  //FIXME: use std::find in durationChars
-  return (c == 1 or
-          c == 2 or
-          c == 3 or
-          c == 4 or
-          c == 6 or
-          c == 8
+bool isDuration(unsigned short s) {
+  //FIXME: use std::find in durations
+  return (s == 1 or
+          s == 2 or
+          s == 4 or
+          s == 8 or
+          s == 16 or
+          s == 32
           );
 }
 
-bool isOctave(char c) {
+bool isDurationChar(char c) {
+  //FIXME: use std::find in durationChars
+  return (c == '1' or
+          c == '2' or
+          c == '3' or
+          c == '4' or
+          c == '6' or
+          c == '8'
+          );
+}
+
+bool isOctaveChar(char c) {
   //FIXME: use std::find in octaveChars
-  unsigned short i = c - '0';
-  return (i == 1 or
-          i == 2 or
-          i == 3
+  return (c == '1' or
+          c == '2' or
+          c == '3'
           );
 }
