@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "input.h"
 
 using namespace std;
@@ -11,8 +13,8 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
 
   sourceFile >> BPM;
 
-  Note* note = new Note();
-  Rest* rest = new Rest();
+  std::shared_ptr<Note> note = std::make_shared<Note>();
+  std::shared_ptr<Rest> rest = std::make_shared<Rest>();
 
   while(1) {
     sourceFile.get(c);
@@ -129,8 +131,6 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
         i--;
         rest->duration = note->duration;
         track.melody.push_back(rest);
-        delete rest;
-        rest = new Rest();
         break;
       case NOTE:
         if(isOctaveChar(c)) {
@@ -142,8 +142,6 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
         sourceFile.unget();
         i--;
         track.melody.push_back(note);
-        delete note;
-        note = new Note();
         break;
       case OCTAVE:
         printf("oct.\n");
@@ -151,14 +149,10 @@ int scan(ifstream &sourceFile, Track &track, int &BPM) {
         sourceFile.unget();
         i--;
         track.melody.push_back(note);
-        delete note;
-        note = new Note();
         break;
     }
     i++;
   }
-  delete rest;
-  delete note;
 
   return true;
 }

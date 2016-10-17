@@ -2,6 +2,7 @@
 #include <fstream>  //std::ifstream
 #include <string>
 #include <map>
+#include <memory>
 #include <ao/ao.h>  //audio library
 
 #include "structs.h"
@@ -24,7 +25,7 @@ int main(int argc, char **argv)
     // return s;
   }
 
-  for(vector<MelodyObject*>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
+  for(vector<std::shared_ptr<MelodyObject>>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
     cout << (*n)->toString() << ' ';
   }
 
