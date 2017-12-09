@@ -1,4 +1,5 @@
 #include <cmath>    //for sharp pitch computation
+#include <memory>
 
 #include "structs.h"
 

@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "input.h"
 
 using namespace std;
