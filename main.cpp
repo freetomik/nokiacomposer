@@ -24,8 +24,8 @@ int main(int argc, char **argv)
     // return s;
   }
 
-  for(vector<MelodyObject*>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
-    cout << (*n)->toString() << ' ';
+  for(vector<MelodyObject>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
+    cout << n->toString() << ' ';
   }
 
   // cout << BPM << endl;

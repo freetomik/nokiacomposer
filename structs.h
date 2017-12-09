@@ -136,7 +136,7 @@ public:
 class Track
 {
 public:
-  std::vector<MelodyObject*> melody;
+  std::vector<MelodyObject> melody;
   
   Track(){}
   ~Track(){}
