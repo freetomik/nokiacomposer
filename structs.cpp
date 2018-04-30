@@ -75,20 +75,20 @@ double NotePitch::getPitch() {
 string Note::toString() {
   string noteString = "";
   noteString += std::to_string(duration.getValue());
-  if(duration.hasDot()) noteString.push_back('.');
-  if(pitch.hasSharp()) noteString.push_back('#');
-  noteString.push_back(pitch.getNote());
+  if(duration.hasDot()) noteString += '.';
+  if(pitch.hasSharp()) noteString += '#';
+  noteString += pitch.getNote();
   switch(pitch.getOctave()) {
     case octaveEnum::SMALL_OCTAVE:
       break;
     case octaveEnum::ONE_LINE_OCTAVE:
-      noteString.push_back('1');
+      noteString += '1';
       break;
     case octaveEnum::TWO_LINE_OCTAVE:
-      noteString.push_back('2');
+      noteString += '2';
       break;
     case octaveEnum::THREE_LINE_OCTAVE:
-      noteString.push_back('3');
+      noteString += '3';
       break;
   }
   return noteString;
@@ -97,8 +97,8 @@ string Note::toString() {
 string Rest::toString() {
   string restString = "";
   restString += std::to_string(duration.getValue());
-  if(duration.hasDot()) restString.push_back('.');
-  restString.push_back('-');
+  if(duration.hasDot()) restString += '.';
+  restString += '-';
   return restString;
 }
 
