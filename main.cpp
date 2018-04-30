@@ -13,20 +13,24 @@ using namespace std;
 int main(int argc, char **argv)
 {
   int BPM;
-  Track t;
+  Track track;
+  if (argc != 2) {
+    std::cout << "usage: " << argv[0] << " input_file" << endl;
+    return 1;
+  }
 
   ifstream sourceFile(argv[1]);
 
-  int s = scan(sourceFile, t, BPM);
+  int s = scan(sourceFile, track, BPM);
   sourceFile.close();
   if(s) {
-    printf("Error with reading file on char %d.\n", s);
+    std::cout << "Error with reading file on char" << s << endl;
     //TODO: print last successfully scanned note
     // return s;
   }
 
-  for(vector<MelodyObject>::iterator n = t.melody.begin(); n != t.melody.end(); ++n) {
-    cout << n->toString() << ' ';
+  for(auto &note : track.melody) {
+    cout << note.toString();
   }
 
   // cout << BPM << endl;
