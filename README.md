@@ -18,5 +18,4 @@ $ ./nokiacomposer example.txt
 ```
 
 ## TODO
-* fix saving notes/rests to memory
 * write parsed melody to MIDI file using [midifile](https://github.com/craigsapp/midifile)
